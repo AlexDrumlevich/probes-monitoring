@@ -1,0 +1,21 @@
+{"properties": [{
+  "name": "sensor.collection.name",
+  "type": "java.lang.String",
+  "description": "Provide a collection name in DB"
+},
+{
+  "name": "sensor.collection.idFieldName",
+  "type": "java.lang.String",
+  "description": "Provide a collection name in DB"
+},
+{
+  "name": "sensor.collection.minValueFieldName",
+  "type": "java.lang.String",
+  "description": "Provide a collection name in DB"
+},
+{
+  "name": "sensor.collection.maxValueFieldName",
+  "type": "java.lang.String",
+  "description": "Provide a collection name in DB"
+}]}
+

@@ -5,18 +5,19 @@
     <artifactId>probes-monitoring</artifactId>
     <version>0.0.1</version>
   </parent>
-  <groupId>telran.avg_populator</groupId>
-  <artifactId>avg-populator</artifactId>
-  <name>avg_populator</name>
+  <groupId>telran.range_provider</groupId>
+  <artifactId>range_provider</artifactId>
+  <name>range_provider</name>
   
   <dependencies>
- 	 <dependency>
-				<groupId>de.flapdoodle.embed</groupId>
-				<artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
-				<version>4.11.0</version>
-				<scope>test</scope>
-			</dependency>
-				 <dependency>
+ 	<!-- https://mvnrepository.com/artifact/de.flapdoodle.embed/de.flapdoodle.embed.mongo -->
+<dependency>
+    <groupId>de.flapdoodle.embed</groupId>
+    <artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
+    <version>4.5.2</version>
+    <scope>test</scope>
+</dependency>
+		 <dependency>
 			 <groupId>telran.probes</groupId>
 			<artifactId>model</artifactId>
   			 <version>${model.version}</version>

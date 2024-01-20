@@ -1,4 +1,4 @@
-package telran.avg_populator.model;
+package telran.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
