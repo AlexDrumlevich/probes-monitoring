@@ -20,6 +20,7 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<model.version>0.0.1</model.version>
+		<api.version>0.0.1</api.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -53,9 +54,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			 <groupId>telran.probes.api</groupId>
+			 <groupId>telran.probes</groupId>
  			 <artifactId>probes-api</artifactId>
- 			 <version>0.0.1</version>
+ 			 <version>${api.version}</version>
 		</dependency>
 		<dependency>
     		  <groupId>org.springframework.boot</groupId>
@@ -108,5 +109,6 @@
 		<module>avg-populator</module>
 		<module>range-provider</module>
 		<module>model</module>
+		<module>probes-api</module>
 	</modules>
 </project>
