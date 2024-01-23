@@ -25,7 +25,8 @@ public class AvgReducerApp {
 	@Autowired
 	private StreamBridge streamBridge;
 
-	@Value("${app.avg.binding.name:avg-out-1}")
+	
+	@Value("${app.avg.binding.name}")
 	String bindingNameAvgSending;
 
 	public static void main(String[] args) {
@@ -53,7 +54,7 @@ public class AvgReducerApp {
 					System.currentTimeMillis()
 				);
 				streamBridge.send(bindingNameAvgSending, dataToSend);
-				log.trace("AvgReducerApp Consumer got value from service: {} and sent data to Message broker: {}", value, dataToSend);
+				log.trace("AvgReducerApp Consumer got value from service: {} and sent by binding name: {},  data to Message broker: {}", value, bindingNameAvgSending, dataToSend);
 			};
 	}
 }

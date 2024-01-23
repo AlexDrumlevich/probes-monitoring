@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.InputDestination;
@@ -16,10 +17,9 @@ import org.springframework.messaging.support.GenericMessage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 import telran.avg_reducer.service.AvgReducerService;
 import telran.probes.dto.ProbeData;
-
-
 
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)
@@ -31,8 +31,10 @@ public class AvgReducerControllerTest {
 	OutputDestination outputStream;
 	
 	String bindingNameInput="avg-in-0";
-	String bindingNameOutput="avg-out-1";
 	
+	@Value("${app.avg.binding.name}")
+	String bindingNameOutput;
+//	app.avg.binding.name=avg-values-out-0
 	@MockBean
 	AvgReducerService avgReducerService;
 	
@@ -60,4 +62,6 @@ public class AvgReducerControllerTest {
 	}
 
 
+
+	
 }

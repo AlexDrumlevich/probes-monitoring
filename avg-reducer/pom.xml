@@ -7,4 +7,16 @@
   </parent>
   <artifactId>avg-reducer</artifactId>
   <name>avg-reducer</name>
+  
+  <dependencies>	 
+	  	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			 <groupId>telran.probes</groupId>
+			 <artifactId>model</artifactId>
+  			 <version>${model.version}</version>
+		</dependency>
+	</dependencies>
 </project>
