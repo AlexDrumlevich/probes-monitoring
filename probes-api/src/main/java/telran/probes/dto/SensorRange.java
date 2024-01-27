@@ -1,5 +1,5 @@
 package telran.probes.dto;
 
-public record SensorRange(int minValue, int maxValue) {
+public record SensorRange(float minValue, float maxValue) {
 
 }

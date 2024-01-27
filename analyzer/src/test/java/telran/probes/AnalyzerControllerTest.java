@@ -3,6 +3,8 @@ package telran.probes;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.function.Consumer;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.InputDestination;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -47,6 +50,9 @@ InputDestination producer;
 	String bindingNameConsumer="consumerProbeData-in-0";
 	@MockBean
 	SensorRangeProviderService providerService;
+	@MockBean(name = "ConfigChangeConsumer")
+	Consumer<String> configChangeConsumer;
+	
 	@Test
 	void noDeviationTest() {
 		when(providerService.getSensorRange(SENSOR_ID))
