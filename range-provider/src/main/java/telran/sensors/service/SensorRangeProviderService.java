@@ -4,6 +4,6 @@ import telran.sensors.dto.SensorRangeDto;
 
 public interface SensorRangeProviderService {
 
-	SensorRangeDto findSensor(String id);
+	SensorRangeDto findSensorRange(String id);
 	
 }

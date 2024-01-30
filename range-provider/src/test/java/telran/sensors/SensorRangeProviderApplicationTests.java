@@ -50,6 +50,10 @@ class SensorRangeProviderApplicationTests {
 	@Value("${sensor.collection.name}")
 	String collectioName;
 	
+
+	@Value("${app.sensor.range.provider.url:/sensor/range}")
+	String url;
+	
 	List<Sensor> sensors = List.of(
 			    new Sensor("1", 10.0, 100.0, null),
 			    new Sensor("2", null, 100.0, null),
@@ -69,9 +73,10 @@ class SensorRangeProviderApplicationTests {
 		Sensor existedSensor = sensors.get(0);
 		SensorRangeDto expectedSensorRangeDto = new SensorRangeDto(existedSensor.getId(), existedSensor.getMinValue(), existedSensor.getMaxValue());
 		
-		assertEquals(expectedSensorRangeDto, sensorRangeProviderService.findSensor(expectedSensorRangeDto.id()));
+		assertEquals(expectedSensorRangeDto, sensorRangeProviderService.findSensorRange(expectedSensorRangeDto.id()));
 	
-		assertThrowsExactly(NotFoundException.class, () -> sensorRangeProviderService.findSensor("0"));
+		assertThrowsExactly(NotFoundException.class, () -> sensorRangeProviderService.findSensorRange
+				("0"));
 		
 	}
 	
@@ -81,13 +86,12 @@ class SensorRangeProviderApplicationTests {
 		SensorRangeDto expectedSensorRangeDto = new SensorRangeDto(existedSensor.getId(), existedSensor.getMinValue(), existedSensor.getMaxValue());
 		String expectedSensorRangeString = mapper.writeValueAsString(expectedSensorRangeDto);
 		
-		String response = mockMvc.perform(get("http://localhost:8080/sensor/1")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		String response = mockMvc.perform(get("http://localhost:8080" + url + "/1")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		assertEquals(expectedSensorRangeString, response);
-//		
-//		String response2 = mockMvc.perform(get("http://localhost:8080/sensor/null")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-//		assertEquals(expectedSensorRangeString, response2);	
+
+		
 	
-		String badRequeExpected = mockMvc.perform(get("http://localhost:8080/sensor/0")).andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString(); 
+		String badRequeExpected = mockMvc.perform(get("http://localhost:8080" + url + "/0")).andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString(); 
 		
 		assertEquals(badRequeExpected, "Sensor id 0 not found");
 		

@@ -6,19 +6,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.extern.slf4j.Slf4j;
 import telran.sensors.dto.SensorRangeDto;
 import telran.sensors.service.SensorRangeProviderService;
 
 @RestController
-@RequestMapping("sensor")
+//@RequestMapping("sensor")
+@Slf4j
 public class SensorController {
 
 	@Autowired
 	SensorRangeProviderService sensorRangeProviderService;
 	
-	@GetMapping("/{id}")
+	//@GetMapping("${app.sensor.range.provider.url:/sensor/range} + /{id}")
+	@GetMapping("/sensor/range/{id}")
 	SensorRangeDto getSensorRange(@PathVariable @NotEmpty String id) {
-		return sensorRangeProviderService.findSensor(id);
+		SensorRangeDto sensorRange =  sensorRangeProviderService.findSensorRange(id);
+		log.debug("sensor range received is {}", sensorRange);
+		return sensorRange;
 	}
 	
 }

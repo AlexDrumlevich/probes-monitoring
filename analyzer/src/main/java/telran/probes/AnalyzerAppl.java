@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.*;
+
 import telran.probes.service.SensorRangeProviderService;
 
 @SpringBootApplication
@@ -35,13 +36,13 @@ String deviationBindingName;
 		SensorRange range = providerService.getSensorRange(sensorId);
 		float value = probeData.value();
 		
-		float border = 0;
+		Float border = Float.NaN;
 		if (value < range.minValue()) {
 			border = range.minValue();
 		} else if(value > range.maxValue()) {
 			border = range.maxValue();
 		}
-		if (border != 0) {
+		if (!border.isNaN()) {
 			float deviation = value - border;
 			log.debug("deviation: {}", deviation);
 			ProbeDataDeviation dataDeviation =

@@ -103,6 +103,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 
@@ -113,5 +114,7 @@
 		<module>range-provider</module>
 		<module>model</module>
 		<module>probes-api</module>
+		<module>email-notifier</module>
+		<module>sensor-imitation</module>
 	</modules>
 </project>

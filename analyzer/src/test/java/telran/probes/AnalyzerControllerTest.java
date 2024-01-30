@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import telran.probes.dto.ProbeData;
 import telran.probes.dto.ProbeDataDeviation;
 import telran.probes.dto.SensorRange;
+
 import telran.probes.service.SensorRangeProviderService;
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)

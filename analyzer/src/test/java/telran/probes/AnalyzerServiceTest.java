@@ -6,6 +6,7 @@ package telran.probes;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.function.Consumer;
@@ -32,6 +33,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import telran.probes.dto.SensorRange;
+
 import telran.probes.service.SensorRangeProviderConfiguration;
 import telran.probes.service.SensorRangeProviderService;
 @SpringBootTest
@@ -52,6 +54,7 @@ class AnalyzerServiceTest {
 	Consumer<String> configChangeConsumer;
 	@Value("${app.update.token.range:range-update}")
 	String rangeUpdateToken;
+	String emailUpdateToken = "email-update";
 	@Value("${app.update.message.delimiter:#}")
 	String delimiter;
 
@@ -76,7 +79,7 @@ class AnalyzerServiceTest {
 	@BeforeEach
 	void setUp() {
 		MyBool.value = false;
-		SENSOR_RANGE_DEFAULT = new SensorRange(sensorRangeProviderConfiguration.getMinDefaultValue(), sensorRangeProviderConfiguration.getMinDefaultValue());
+		SENSOR_RANGE_DEFAULT = new SensorRange(sensorRangeProviderConfiguration.getMinDefaultValue(), sensorRangeProviderConfiguration.getMaxDefaultValue());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -126,23 +129,22 @@ class AnalyzerServiceTest {
 
 	@Test
 	@Order(4)
-	void normalFlowExistedRangeUpdateNotRangeValues() {
-		//checking before update
-		SensorRange actual = providerService.getSensorRange(SENSOR_ID);
-		assertEquals(SENSOR_RANGE_UPDATED, actual);
-
+	void normalFlowNotRangeValuesUpdated() {
+		
 		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRange>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
+
 
 		//event for updating (invocation restTemplate.exchange())
 		producer.send(
-				new GenericMessage<String>(String.format("%s%s%s", rangeUpdateToken, delimiter, String.valueOf(SENSOR_ID))),
+				new GenericMessage<String>(String.format("%s%s%s", emailUpdateToken, delimiter, String.valueOf(SENSOR_ID))),
 				bindingProducerName
 				);
 
 		//checking after updating 
 		SensorRange actualUpdated = providerService.getSensorRange(SENSOR_ID);
 		assertEquals(SENSOR_RANGE_UPDATED, actualUpdated);
-		assertTrue(MyBool.value);
+		assertFalse(MyBool.value);
+		verifyNoInteractions(restTemplate);
 	}
 
 	@Test

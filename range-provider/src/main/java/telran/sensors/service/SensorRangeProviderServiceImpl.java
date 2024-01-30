@@ -19,7 +19,7 @@ private SensorRepository sensorRepository;
 private Validator validator;
 
 	@Override
-	public SensorRangeDto findSensor(String id) {
+	public SensorRangeDto findSensorRange(String id) {
 		// TODO Auto-generated method stub
 		SensorRangeDto result = sensorRepository.findSensorById(id).orElseThrow(() -> new NotFoundException(String.format("Sensor id %s not found", id)));
 		log.debug("SensorRepository findSensor by id: {} got {}", id, result);
