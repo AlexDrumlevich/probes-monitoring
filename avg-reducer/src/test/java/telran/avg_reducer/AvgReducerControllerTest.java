@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import telran.avg_reducer.service.AvgReducerService;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)
@@ -40,13 +40,13 @@ public class AvgReducerControllerTest {
 	
 	ObjectMapper objectMapper = new ObjectMapper();
 	
-	ProbeData inputProbeData = new ProbeData(1, 10, 0);
-	ProbeData outputProbeData = new ProbeData(1, 5, 0);
+	ProbeDataDto inputProbeData = new ProbeDataDto(1, 10, 0);
+	ProbeDataDto outputProbeData = new ProbeDataDto(1, 5, 0);
 	
 	@Test
 	void avgReducerSendNothingTest() {
 		when(avgReducerService.getAvgValue(inputProbeData)).thenReturn(null);
-		inputStrem.send(new GenericMessage<ProbeData>(inputProbeData), bindingNameInput);
+		inputStrem.send(new GenericMessage<ProbeDataDto>(inputProbeData), bindingNameInput);
 		Message<byte[]> sentMessage = outputStream.receive(10, bindingNameOutput);
 		assertNull(sentMessage);
 	}
@@ -54,10 +54,10 @@ public class AvgReducerControllerTest {
 	@Test
 	void avgReducerSendDataTest() throws Exception {
 		when(avgReducerService.getAvgValue(inputProbeData)).thenReturn(5l);
-		inputStrem.send(new GenericMessage<ProbeData>(inputProbeData), bindingNameInput);
+		inputStrem.send(new GenericMessage<ProbeDataDto>(inputProbeData), bindingNameInput);
 		Message<byte[]> sentMessage = outputStream.receive(10, bindingNameOutput);
 		assertNotNull(sentMessage);
-		ProbeData sentProbeData = objectMapper.readValue(sentMessage.getPayload(), ProbeData.class);
+		ProbeDataDto sentProbeData = objectMapper.readValue(sentMessage.getPayload(), ProbeDataDto.class);
 		assertEquals(sentProbeData, outputProbeData);
 	}
 

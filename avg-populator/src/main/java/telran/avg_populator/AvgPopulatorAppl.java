@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import telran.avg_populator.service.AvgPopulatorService;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 @SpringBootApplication
 public class AvgPopulatorAppl {
@@ -21,7 +21,7 @@ public class AvgPopulatorAppl {
 	}
 	
 	@Bean
-	Consumer<ProbeData> avgPopulating(){
+	Consumer<ProbeDataDto> avgPopulating(){
 		return avgPopulatorService::saveProbeData;
 	}
 	

@@ -23,7 +23,7 @@ import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import telran.probes.dto.ProbeDataDeviation;
+import telran.probes.dto.ProbeDataDeviationDto;
 import telran.probes.service.EmailDataProviderClient;
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)
@@ -36,7 +36,7 @@ class EmailNotifierControllerTest {
 	@RegisterExtension
 	static GreenMailExtension mailExtension = new GreenMailExtension(ServerSetupTest.SMTP)
 	.withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "12345.com"));
-	ProbeDataDeviation deviationData = new ProbeDataDeviation(SENSOR_ID, 100, 10, 0);
+	ProbeDataDeviationDto deviationData = new ProbeDataDeviationDto(SENSOR_ID, 100, 10, 0);
 	String[] emails = {
 		"name1@gmail.com",
 		"name2@telran.co.il"
@@ -45,7 +45,7 @@ class EmailNotifierControllerTest {
 	@Test
 	void test() throws MessagingException {
 		when(providerClient.getEmails(SENSOR_ID)).thenReturn(emails);
-		producer.send(new GenericMessage<ProbeDataDeviation>(deviationData), consumerBindingName );
+		producer.send(new GenericMessage<ProbeDataDeviationDto>(deviationData), consumerBindingName );
 		MimeMessage[] messages = mailExtension.getReceivedMessages();
 		assertTrue(messages.length > 0);
 		MimeMessage message = messages[0];

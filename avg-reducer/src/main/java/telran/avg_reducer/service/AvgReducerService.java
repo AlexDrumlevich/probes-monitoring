@@ -1,10 +1,10 @@
 package telran.avg_reducer.service;
 
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 
 public interface AvgReducerService {
 
-	Long getAvgValue(ProbeData probeData);
+	Long getAvgValue(ProbeDataDto probeData);
 	
 }

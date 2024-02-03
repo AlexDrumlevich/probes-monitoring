@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import telran.probes.dto.ProbeDataDeviation;
+import telran.probes.dto.ProbeDataDeviationDto;
 import telran.probes.service.EmailDataProviderClient;
 
 @SpringBootApplication
@@ -26,16 +26,16 @@ final JavaMailSender mailSender;
 
 	}
 	@Bean
-	Consumer<ProbeDataDeviation> deviationConsumer() {
+	Consumer<ProbeDataDeviationDto> deviationConsumer() {
 		return this::deviationNotificationSend;
 	}
-	void deviationNotificationSend(ProbeDataDeviation deviationData) {
+	void deviationNotificationSend(ProbeDataDeviationDto deviationData) {
 		log.debug("received deviation {}", deviationData);
 		long sensorId = deviationData.sensorId();
 		String[] emails = providerClient.getEmails(sensorId);
 		sendMails(emails, deviationData);
 	}
-	private void sendMails(String[] emails, ProbeDataDeviation deviationData) {
+	private void sendMails(String[] emails, ProbeDataDeviationDto deviationData) {
 		String text = getText(deviationData);
 		SimpleMailMessage smm = new SimpleMailMessage();
 		String subject = getSubject(deviationData);
@@ -48,10 +48,10 @@ final JavaMailSender mailSender;
 		log.debug("mail sent to above emails");
 		
 	}
-	private String getSubject(ProbeDataDeviation deviationData) {
+	private String getSubject(ProbeDataDeviationDto deviationData) {
 		return String.format("Deviation of sensor %d", deviationData.sensorId());
 	}
-	private String getText(ProbeDataDeviation deviationData) {
+	private String getText(ProbeDataDeviationDto deviationData) {
 		
 		return String.format("Sensor %d has value %f \n deviation is %f",
 				deviationData.sensorId(), deviationData.value(), deviationData.deviation());

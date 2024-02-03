@@ -16,8 +16,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
 import lombok.extern.slf4j.Slf4j;
+import telran.probes.dto.SensorRangeDto;
 
-import telran.sensors.dto.SensorRangeDto;
 
 @Slf4j
 @Repository
@@ -34,7 +34,7 @@ public class SensorRepository {
 	@Value("${sensor.collection.maxValueFieldName}")
 	String maxValueFieldName;
 	
-	public Optional<SensorRangeDto> findSensorById(String id) {
+	public Optional<SensorRangeDto> findSensorById(long id) {
 		
 		Aggregation aggregation = Aggregation.newAggregation(
 				Aggregation.match(Criteria.where(idFieldName).is(id)),
@@ -48,7 +48,7 @@ public class SensorRepository {
 		if(resDocuments.size() == 1) {
 			Document resDocument = resDocuments.get(0);
 			resSensorRangeDto = new SensorRangeDto(
-					resDocument.getString(idFieldName),
+					resDocument.getLong(idFieldName),
 					resDocument.getDouble(minValueFieldName),
 					resDocument.getDouble(maxValueFieldName)
 					);

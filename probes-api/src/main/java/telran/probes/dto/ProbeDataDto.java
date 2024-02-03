@@ -2,7 +2,7 @@ package telran.probes.dto;
 
 import java.util.Objects;
 
-public record ProbeData(long sensorId, float value, long timestamp) {
+public record ProbeDataDto(long sensorId, float value, long timestamp) {
 
 	@Override
 	public int hashCode() {
@@ -17,7 +17,7 @@ public record ProbeData(long sensorId, float value, long timestamp) {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProbeData other = (ProbeData) obj;
+		ProbeDataDto other = (ProbeDataDto) obj;
 		return sensorId == other.sensorId && Float.floatToIntBits(value) == Float.floatToIntBits(other.value);
 	}
 

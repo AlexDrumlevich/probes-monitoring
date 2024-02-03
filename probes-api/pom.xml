@@ -9,4 +9,17 @@
 	  <maven.compiler.source>17</maven.compiler.source>
 	  <maven.compiler.target>17</maven.compiler.target>
   </properties>
+  
+  <dependencies>
+	  <dependency>
+		   <groupId>org.springframework.boot</groupId>
+  		   <artifactId>spring-boot-starter-validation</artifactId>
+ 		   <version>3.2.2</version>
+	  </dependency>
+	  <dependency>
+  		<groupId>telran.spring</groupId>
+		<artifactId>web-exceptions-handler</artifactId>
+		<version>0.0.1</version>
+	</dependency>
+  </dependencies>
 </project>

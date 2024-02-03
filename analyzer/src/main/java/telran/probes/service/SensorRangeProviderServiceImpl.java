@@ -16,14 +16,14 @@ import org.springframework.web.client.RestTemplate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import telran.probes.dto.SensorRange;
+import telran.probes.dto.SensorRangeDto;
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
 public class SensorRangeProviderServiceImpl implements SensorRangeProviderService {
 	@Getter
-	HashMap<Long, SensorRange> mapRanges = new HashMap<>();
+	HashMap<Long, SensorRangeDto> mapRanges = new HashMap<>();
 	@Value("${app.update.message.delimiter:#}")
 	String delimiter;
 	@Value("${app.update.token.range:range-update}")
@@ -31,8 +31,8 @@ public class SensorRangeProviderServiceImpl implements SensorRangeProviderServic
 	final SensorRangeProviderConfiguration providerConfiguration;
 	final RestTemplate restTemplate;
 	@Override
-	public SensorRange getSensorRange(long sensorId) {
-		SensorRange range = mapRanges.get(sensorId);
+	public SensorRangeDto getSensorRange(long sensorId) {
+		SensorRangeDto range = mapRanges.get(sensorId);
 		
 		return range == null ? getRangeFromService(sensorId) : range;
 	}
@@ -55,31 +55,28 @@ public class SensorRangeProviderServiceImpl implements SensorRangeProviderServic
 		}
 		
 	}
-	private SensorRange getRangeFromService(long id) {
-		SensorRange res =null;
+	private SensorRangeDto getRangeFromService(long id) {
+		SensorRangeDto res =null;
 		try {
 			ResponseEntity<?> responseEntity = 
-			restTemplate.exchange(getFullUrl(id), HttpMethod.GET, null, SensorRange.class);
+			restTemplate.exchange(getFullUrl(id), HttpMethod.GET, null, SensorRangeDto.class);
 			if(!responseEntity.getStatusCode().is2xxSuccessful()) {
 				throw new Exception((String) responseEntity.getBody());
 			}
-			res = (SensorRange)responseEntity.getBody();
+			res = (SensorRangeDto)responseEntity.getBody();
 			mapRanges.put(id, res);
 		} catch (Exception e) {
 			log.error("no sensor range provided for sensor {}, reason: {}",
 					id, e.getMessage());
 			mapRanges.remove(id);
-			res = getDefaultRange();
+			res = new SensorRangeDto(id, providerConfiguration.getMinDefaultValue(),
+					providerConfiguration.getMaxDefaultValue());
 			log.warn("Taken default range {} - {}", res.minValue(), res.maxValue());
 		}
 		log.debug("Range for sensor {} is {}", id, res);
 		return res;
 	}
-	private SensorRange getDefaultRange() {
-		
-		return new SensorRange(providerConfiguration.getMinDefaultValue(),
-				providerConfiguration.getMaxDefaultValue());
-	}
+	
 	private String getFullUrl(long id) {
 		String res = String.format("http://%s:%d%s/%d",
 				providerConfiguration.getHost(),

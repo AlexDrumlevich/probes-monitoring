@@ -27,26 +27,26 @@ String deviationBindingName;
 
 	}
 	@Bean
-	public Consumer<ProbeData> consumerProbeData() {
+	public Consumer<ProbeDataDto> consumerProbeData() {
 		return this::consumeMethod;
 	}
-	void consumeMethod(ProbeData probeData) {
+	void consumeMethod(ProbeDataDto probeData) {
 		log.trace("received probe: {}", probeData);
 		long sensorId = probeData.sensorId();
-		SensorRange range = providerService.getSensorRange(sensorId);
-		float value = probeData.value();
+		SensorRangeDto range = providerService.getSensorRange(sensorId);
+		double value = probeData.value();
 		
-		Float border = Float.NaN;
+		Double border = Double.NaN;
 		if (value < range.minValue()) {
 			border = range.minValue();
 		} else if(value > range.maxValue()) {
 			border = range.maxValue();
 		}
 		if (!border.isNaN()) {
-			float deviation = value - border;
+			double deviation = value - border;
 			log.debug("deviation: {}", deviation);
-			ProbeDataDeviation dataDeviation =
-					new ProbeDataDeviation(sensorId, value, deviation, System.currentTimeMillis());
+			ProbeDataDeviationDto dataDeviation =
+					new ProbeDataDeviationDto(sensorId, value, deviation, System.currentTimeMillis());
 			streamBridge.send(deviationBindingName, dataDeviation);
 			log.debug("deviation data {} sent to {}", dataDeviation, deviationBindingName);
 			

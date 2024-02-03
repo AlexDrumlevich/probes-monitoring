@@ -2,34 +2,25 @@ package telran.sensors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import java.util.List;
-import java.util.stream.IntStream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.Module.SetupContext;
 
 import telran.exceptions.NotFoundException;
 import telran.sensors.controller.SensorController;
-import telran.sensors.dto.SensorRangeDto;
+
 import telran.model.Sensor;
-import telran.sensors.repository.SensorRepository;
+import telran.probes.dto.SensorRangeDto;
 import telran.sensors.service.SensorRangeProviderService;
 
 @AutoConfigureWebMvc
@@ -55,9 +46,9 @@ class SensorRangeProviderApplicationTests {
 	String url;
 	
 	List<Sensor> sensors = List.of(
-			    new Sensor("1", 10.0, 100.0, null),
-			    new Sensor("2", null, 100.0, null),
-	            new Sensor("3", 10.0, null, null)
+			    new Sensor(1l, 10.0, 100.0, 1000, List.of("email1@gmail.com")),
+			    new Sensor(2l, 0.0, 100.0, 2000, List.of("email2@gmail.com")),
+	            new Sensor(3l, 10.0, 20.0, 3000, List.of("email3@gmail.com"))
 			);
 
 
@@ -76,7 +67,7 @@ class SensorRangeProviderApplicationTests {
 		assertEquals(expectedSensorRangeDto, sensorRangeProviderService.findSensorRange(expectedSensorRangeDto.id()));
 	
 		assertThrowsExactly(NotFoundException.class, () -> sensorRangeProviderService.findSensorRange
-				("0"));
+				(0));
 		
 	}
 	

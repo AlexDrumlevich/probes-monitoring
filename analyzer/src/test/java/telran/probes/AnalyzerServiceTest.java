@@ -32,7 +32,7 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import telran.probes.dto.SensorRange;
+import telran.probes.dto.SensorRangeDto;
 
 import telran.probes.service.SensorRangeProviderConfiguration;
 import telran.probes.service.SensorRangeProviderService;
@@ -61,15 +61,15 @@ class AnalyzerServiceTest {
 
 
 	static final long SENSOR_ID = 123l;
-	private static final float MIN_VALUE = 10;
-	private static final float MAX_VALUE = 20;
-	private static final float MIN_VALUE_UPDATED = -10;
-	private static final float MAX_VALUE_UPDATED = 120;
+	private static final double MIN_VALUE = 10;
+	private static final double MAX_VALUE = 20;
+	private static final double MIN_VALUE_UPDATED = -10;
+	private static final double MAX_VALUE_UPDATED = 120;
 	static final long SENSOR_ID2 = 124l;
 	static final long SENSOR_ID_NOT_EXISTED = 126l;
-	static final SensorRange SENSOR_RANGE = new SensorRange(MIN_VALUE, MAX_VALUE); 
-	static final SensorRange SENSOR_RANGE_UPDATED = new SensorRange(MIN_VALUE_UPDATED, MAX_VALUE_UPDATED); 
-	static SensorRange SENSOR_RANGE_DEFAULT; 
+	static final SensorRangeDto SENSOR_RANGE = new SensorRangeDto(SENSOR_ID, MIN_VALUE, MAX_VALUE); 
+	static final SensorRangeDto SENSOR_RANGE_UPDATED = new SensorRangeDto(SENSOR_ID, MIN_VALUE_UPDATED, MAX_VALUE_UPDATED); 
+	static SensorRangeDto SENSOR_RANGE_DEFAULT; 
 
 
 	class MyBool {
@@ -79,7 +79,7 @@ class AnalyzerServiceTest {
 	@BeforeEach
 	void setUp() {
 		MyBool.value = false;
-		SENSOR_RANGE_DEFAULT = new SensorRange(sensorRangeProviderConfiguration.getMinDefaultValue(), sensorRangeProviderConfiguration.getMaxDefaultValue());
+		SENSOR_RANGE_DEFAULT = new SensorRangeDto(SENSOR_ID, sensorRangeProviderConfiguration.getMinDefaultValue(), sensorRangeProviderConfiguration.getMaxDefaultValue());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -87,9 +87,9 @@ class AnalyzerServiceTest {
 	@Order(1)
 	void normalFlowWithNoMapData() {
 
-		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRange>(SENSOR_RANGE, HttpStatus.OK));
+		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRangeDto>(SENSOR_RANGE, HttpStatus.OK));
 
-		SensorRange actual = providerService.getSensorRange(SENSOR_ID);
+		SensorRangeDto actual = providerService.getSensorRange(SENSOR_ID);
 		assertEquals(SENSOR_RANGE, actual);
 		assertTrue(MyBool.value);
 
@@ -100,7 +100,7 @@ class AnalyzerServiceTest {
 	void normalFlowWithMapData() {
 		mockRestTemplateExchangeInvocation(null);
 
-		SensorRange actual = providerService.getSensorRange(SENSOR_ID);
+		SensorRangeDto actual = providerService.getSensorRange(SENSOR_ID);
 		assertEquals(SENSOR_RANGE, actual);
 		assertFalse(MyBool.value);
 	}
@@ -109,10 +109,10 @@ class AnalyzerServiceTest {
 	@Order(3)
 	void normalFlowExistedRangeUpdate() {
 
-		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRange>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
+		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRangeDto>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
 
 		//checking before update
-		SensorRange actual = providerService.getSensorRange(SENSOR_ID);
+		SensorRangeDto actual = providerService.getSensorRange(SENSOR_ID);
 		assertEquals(SENSOR_RANGE, actual);
 
 		//event for updating (invocation restTemplate.exchange())
@@ -122,7 +122,7 @@ class AnalyzerServiceTest {
 				);
 
 		//checking after updating
-		SensorRange actualUpdated = providerService.getSensorRange(SENSOR_ID);
+		SensorRangeDto actualUpdated = providerService.getSensorRange(SENSOR_ID);
 		assertEquals(SENSOR_RANGE_UPDATED, actualUpdated);
 		assertTrue(MyBool.value);
 	}
@@ -131,7 +131,7 @@ class AnalyzerServiceTest {
 	@Order(4)
 	void normalFlowNotRangeValuesUpdated() {
 		
-		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRange>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
+		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRangeDto>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
 
 
 		//event for updating (invocation restTemplate.exchange())
@@ -141,7 +141,7 @@ class AnalyzerServiceTest {
 				);
 
 		//checking after updating 
-		SensorRange actualUpdated = providerService.getSensorRange(SENSOR_ID);
+		SensorRangeDto actualUpdated = providerService.getSensorRange(SENSOR_ID);
 		assertEquals(SENSOR_RANGE_UPDATED, actualUpdated);
 		assertFalse(MyBool.value);
 		verifyNoInteractions(restTemplate);
@@ -152,11 +152,11 @@ class AnalyzerServiceTest {
 
 
 		//checking before update
-		SensorRange actual = providerService.getSensorRange(SENSOR_ID_NOT_EXISTED);
+		SensorRangeDto actual = providerService.getSensorRange(SENSOR_ID_NOT_EXISTED);
 		assertEquals(SENSOR_RANGE_DEFAULT, actual);
 
 		
-		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRange>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
+		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRangeDto>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
 
 		//event for updating (invocation restTemplate.exchange())
 		producer.send(
@@ -165,7 +165,7 @@ class AnalyzerServiceTest {
 				);
 
 		//checking after updating
-		SensorRange actualUpdated = providerService.getSensorRange(SENSOR_ID_NOT_EXISTED);
+		SensorRangeDto actualUpdated = providerService.getSensorRange(SENSOR_ID_NOT_EXISTED);
 		assertEquals(SENSOR_RANGE_UPDATED, actualUpdated);
 		assertTrue(MyBool.value);
 	}

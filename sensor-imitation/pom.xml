@@ -6,4 +6,12 @@
     <version>0.0.1</version>
   </parent>
   <artifactId>sensor-imitation</artifactId>
+  
+  <dependencies>
+	   <dependency>
+			 <groupId>telran.probes</groupId>
+			<artifactId>model</artifactId>
+  			 <version>${model.version}</version>
+		</dependency>
+  </dependencies>
 </project>

@@ -1,7 +1,7 @@
 package telran.probes.service;
 
-import telran.probes.dto.SensorRange;
+import telran.probes.dto.SensorRangeDto;
 
 public interface SensorRangeProviderService {
-SensorRange getSensorRange(long sensorId);
+SensorRangeDto getSensorRange(long sensorId);
 }

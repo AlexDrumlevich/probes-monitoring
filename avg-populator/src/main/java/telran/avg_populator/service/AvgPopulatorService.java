@@ -1,7 +1,7 @@
 package telran.avg_populator.service;
 
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 public interface AvgPopulatorService {
-	void saveProbeData(ProbeData probeData);
+	void saveProbeData(ProbeDataDto probeData);
 }

@@ -19,29 +19,29 @@ import org.springframework.messaging.support.GenericMessage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import telran.probes.dto.ProbeData;
-import telran.probes.dto.ProbeDataDeviation;
-import telran.probes.dto.SensorRange;
+import telran.probes.dto.ProbeDataDto;
+import telran.probes.dto.ProbeDataDeviationDto;
+import telran.probes.dto.SensorRangeDto;
 
 import telran.probes.service.SensorRangeProviderService;
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)
 class AnalyzerControllerTest {
 	private static final long SENSOR_ID = 123l;
-	private static final int MIN_VALUE_NO_DEVIATION = 10;
-	private static final int MAX_VALUE_NO_DEVIATION = 100;
-	private static final int MIN_VALUE_DEVIATION = 60;
-	private static final int MAX_VALUE_DEVIATION = 40;
-	private static final SensorRange SENSOR_RANGE_NO_DEVIATION =
-			new SensorRange(MIN_VALUE_NO_DEVIATION, MAX_VALUE_NO_DEVIATION );
-	private static final SensorRange SENSOR_RANGE_MIN_DEVIATION =
-			new SensorRange(MIN_VALUE_DEVIATION, MAX_VALUE_NO_DEVIATION );
-	private static final SensorRange SENSOR_RANGE_MAX_DEVIATION =
-			new SensorRange(MIN_VALUE_DEVIATION, MAX_VALUE_DEVIATION );
+	private static final double MIN_VALUE_NO_DEVIATION = 10;
+	private static final double MAX_VALUE_NO_DEVIATION = 100;
+	private static final double MIN_VALUE_DEVIATION = 60;
+	private static final double MAX_VALUE_DEVIATION = 40;
+	private static final SensorRangeDto SENSOR_RANGE_NO_DEVIATION =
+			new SensorRangeDto(SENSOR_ID, MIN_VALUE_NO_DEVIATION, MAX_VALUE_NO_DEVIATION );
+	private static final SensorRangeDto SENSOR_RANGE_MIN_DEVIATION =
+			new SensorRangeDto(SENSOR_ID, MIN_VALUE_DEVIATION, MAX_VALUE_NO_DEVIATION );
+	private static final SensorRangeDto SENSOR_RANGE_MAX_DEVIATION =
+			new SensorRangeDto(SENSOR_ID, MIN_VALUE_DEVIATION, MAX_VALUE_DEVIATION );
 	private static final float VALUE = 50f;
-	static final ProbeDataDeviation DATA_MIN_DEVIATION = new ProbeDataDeviation(SENSOR_ID, VALUE, VALUE - MIN_VALUE_DEVIATION, 0);
+	static final ProbeDataDeviationDto DATA_MIN_DEVIATION = new ProbeDataDeviationDto(SENSOR_ID, VALUE, VALUE - MIN_VALUE_DEVIATION, 0);
 	
-	static final ProbeData probeData = new ProbeData(SENSOR_ID, VALUE, 0);
+	static final ProbeDataDto probeData = new ProbeDataDto(SENSOR_ID, VALUE, 0);
 	ObjectMapper mapper = new ObjectMapper();
 	@Autowired
 InputDestination producer;
@@ -58,7 +58,7 @@ InputDestination producer;
 	void noDeviationTest() {
 		when(providerService.getSensorRange(SENSOR_ID))
 		.thenReturn(SENSOR_RANGE_NO_DEVIATION);
-		producer.send(new GenericMessage<ProbeData>(probeData), bindingNameConsumer);
+		producer.send(new GenericMessage<ProbeDataDto>(probeData), bindingNameConsumer);
 		Message<byte[]> message = consumer.receive(10, bindingNameProducer);
 		assertNull(message);
 	}
@@ -66,10 +66,10 @@ InputDestination producer;
 	void minDeviationTest() throws Exception {
 		when(providerService.getSensorRange(SENSOR_ID))
 		.thenReturn(SENSOR_RANGE_MIN_DEVIATION);
-		producer.send(new GenericMessage<ProbeData>(probeData), bindingNameConsumer);
+		producer.send(new GenericMessage<ProbeDataDto>(probeData), bindingNameConsumer);
 		Message<byte[]> message = consumer.receive(10, bindingNameProducer);
 		assertNotNull(message);
-		ProbeDataDeviation actualDeviation = mapper.readValue(message.getPayload(), ProbeDataDeviation.class);
+		ProbeDataDeviationDto actualDeviation = mapper.readValue(message.getPayload(), ProbeDataDeviationDto.class);
 		assertEquals(DATA_MIN_DEVIATION, actualDeviation);
 		
 	}

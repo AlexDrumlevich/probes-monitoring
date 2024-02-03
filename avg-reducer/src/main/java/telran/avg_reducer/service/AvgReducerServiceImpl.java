@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.avg_reducer.repo.ProbesListRepo;
 import telran.model.ProbesList;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 
 import java.util.*;
@@ -23,7 +23,7 @@ final ProbesListRepo probesListRepo;
 int reducingSize;
 	@Override
 	@Transactional
-	public Long getAvgValue(ProbeData probeData) {
+	public Long getAvgValue(ProbeDataDto probeData) {
 		long sensorId = probeData.sensorId();
 		Long res = null;
 		ProbesList probesList = probesListRepo.findById(sensorId).orElse(null);

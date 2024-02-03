@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 
 import lombok.extern.slf4j.Slf4j;
 import telran.avg_reducer.service.AvgReducerService;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 @SpringBootApplication
 @Slf4j
@@ -35,7 +35,7 @@ public class AvgReducerApp {
 	}
 
 	@Bean
-	public Consumer<ProbeData> avg() {
+	public Consumer<ProbeDataDto> avg() {
 		return data -> {
 			log.trace("AvgReducerApp Consumer got data from Message broker: {}", data);
 			Optional.ofNullable(avgReducerService.getAvgValue(data)).ifPresentOrElse(
@@ -45,10 +45,10 @@ public class AvgReducerApp {
 		};
 	}
 
-	private Consumer<Long> pdoduceAvgProdeData(ProbeData data) {
+	private Consumer<Long> pdoduceAvgProdeData(ProbeDataDto data) {
 		return value -> 
 			{
-				ProbeData dataToSend = new ProbeData(
+				ProbeDataDto dataToSend = new ProbeDataDto(
 					data.sensorId(),
 					value,
 					System.currentTimeMillis()

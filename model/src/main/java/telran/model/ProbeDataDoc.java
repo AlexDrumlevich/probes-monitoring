@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 @Document(collection="probe_values")
 @AllArgsConstructor
@@ -14,11 +14,11 @@ public class ProbeDataDoc {
 	float value;
 	long timestamp;
 	
-	public static ProbeDataDoc of(ProbeData probeData) {
+	public static ProbeDataDoc of(ProbeDataDto probeData) {
 		return new ProbeDataDoc(probeData.sensorId(), probeData.value(), probeData.timestamp());
 	}
 	
-	public ProbeData toDto() {
-		return new ProbeData(sensorId, value, timestamp);
+	public ProbeDataDto toDto() {
+		return new ProbeDataDto(sensorId, value, timestamp);
 	}
 }

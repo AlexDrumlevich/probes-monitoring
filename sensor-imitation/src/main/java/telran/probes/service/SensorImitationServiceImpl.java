@@ -1,6 +1,7 @@
 package telran.probes.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.ApplicationContext;
 
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
+import telran.model.Sensor;
+import telran.probes.repo.SensorRepo;
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -19,42 +22,79 @@ public class SensorImitationServiceImpl implements SensorImitationService {
 	private ApplicationContext context;
 	@NonNull
 	private StreamBridge streamBridge;
+	@NonNull
+	private Scheduler scheduler;
+	@NonNull
+	private SensorRepo sensorRepo;
+	@Value("${app.sensor.deviationProbability}")
+	int deviationProbability;
+	@Value("${app.sensor.deviationSize}")
+	int deviationSize;
+	
+	@Value("app.binding_name.output")
+	private String bindingOutstreaName;
 
-	private String bindingOutstreaName = "consumerProbeData-out-0";
+	
 	@Override
-	public void runSensor(long id, float minRangeValue, float maxRandeValue, int deviationProbabilityPercentage,
-			float maxDeviationSize, int sheduledTimeRateMs) {
+	public void runSensors() {
+		sensorRepo.setAllFromDB();
+		sensorRepo.getSensors().forEach(s -> scheduler.addSensorIntoScheduler(s));
+		scheduler.runSchedulerMethod();
+	
 
-		Scheduler scheduler = context.getBean("Scheduler", Scheduler.class);
-		scheduler.setSheduledTimeRateMs(sheduledTimeRateMs);
-		scheduler.setMethod(() -> {
-					ProbeData probeData = getRandomProbeData(id, minRangeValue, maxRandeValue, deviationProbabilityPercentage,maxDeviationSize);
+		
+		scheduler.setMethod((sensor) -> {
+					ProbeDataDto probeData = getRandomProbeData(sensor.getId(), sensor.getMinValue(), sensor.getMaxValue(), deviationProbability, deviationSize);
 					log.trace("Sending probe data: {}", probeData);
 					streamBridge.send(bindingOutstreaName, probeData);
-				});
-				scheduler.runSchedulerMethod();
-
+				});	
 	}
 
-	ProbeData getRandomProbeData(long sensorId, float minRangeValue, float maxRangeValue, int deviationProbabilityPercentage, float maxDeviationSize) {
+	private ProbeDataDto getRandomProbeData(long sensorId, double minRangeValue, double maxRangeValue, int deviationProbability, int deviationSize) {
 
-		float resultValue;
+		double resultValue;
 
-		deviationProbabilityPercentage = deviationProbabilityPercentage > 100 ? 100 : deviationProbabilityPercentage;
+		deviationProbability = deviationProbability > 100 ? 100 : deviationProbability;
 
-		boolean isDeviationValue = deviationProbabilityPercentage > 0 && (((int) Math.random() * 100 + 1) <= deviationProbabilityPercentage);  
+		boolean isDeviationValue = deviationProbability > 0 && (((int) Math.random() * 100 + 1) <= deviationProbability);  
 
 		if(isDeviationValue) {
-			resultValue = ((float)Math.random() * (maxRangeValue + maxDeviationSize - maxRangeValue)) + maxRangeValue;
+			double deviation = (maxRangeValue - minRangeValue) * (Math.random() * deviationSize / 100);
+			resultValue = Math.random() > 0.5 ? minRangeValue - deviation : maxRangeValue + deviation;
+	
 		} else {
-			resultValue = ((float)Math.random() * (maxRangeValue - minRangeValue)) + minRangeValue;
+			resultValue = (Math.random() * (maxRangeValue - minRangeValue)) + minRangeValue;
 		}
 
-		return new ProbeData(sensorId, resultValue, System.currentTimeMillis());
-
-
-
+		return new ProbeDataDto(sensorId, (float) resultValue, System.currentTimeMillis());
 
 	}
+	
+	@Override
+	public void addSensorToScheduler(Sensor sensor) {
+		scheduler.addSensorIntoScheduler(sensor);
+	}
 
+
+	@Override
+	public void addSensor(long id) {
+		sensorRepo.addUpdate(id);
+		addSensorToScheduler(sensorRepo.getSensorFromInnerMap(id));
+	}
+
+
+	@Override
+	public void updateSensor(long id) {
+		sensorRepo.addUpdate(id);
+	}
+
+	@Override
+	public void saveSensor(Sensor sensor) {
+		sensorRepo.save(sensor);
+		
+	}
+
+	
+	
+	
 }

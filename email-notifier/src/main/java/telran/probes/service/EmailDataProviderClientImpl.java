@@ -16,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import telran.probes.dto.SensorEmails;
-import telran.probes.dto.SensorRange;
+import telran.probes.dto.SensorEmailsDto;
+import telran.probes.dto.SensorRangeDto;
 @Service
 @RequiredArgsConstructor
 @Slf4j

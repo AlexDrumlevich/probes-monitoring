@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.messaging.support.GenericMessage;
 
 import telran.avg_populator.repo.AvgPopulatorRepo;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)
@@ -28,7 +28,7 @@ public class AvgPopulatorTest {
 	String bindingNameInput="avgPopulating-in-0";
 	
 	long timestamp = System.currentTimeMillis();
-	ProbeData probeDataExpexted = new ProbeData(1l, 12.3f, timestamp);
+	ProbeDataDto probeDataExpexted = new ProbeDataDto(1l, 12.3f, timestamp);
 	
 	@BeforeEach
 	void setup() {
@@ -37,8 +37,8 @@ public class AvgPopulatorTest {
 	
 	@Test
 	void commonTest() {
-		imputStream.send(new GenericMessage<ProbeData>(probeDataExpexted), bindingNameInput);
-		ProbeData probeDataActual = avgPopulatorRepo.findById(1l).get().toDto();
+		imputStream.send(new GenericMessage<ProbeDataDto>(probeDataExpexted), bindingNameInput);
+		ProbeDataDto probeDataActual = avgPopulatorRepo.findById(1l).get().toDto();
 		 assertEquals(probeDataExpexted, probeDataActual);
 	}
 	

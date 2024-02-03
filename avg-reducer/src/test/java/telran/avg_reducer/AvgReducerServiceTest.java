@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import telran.avg_reducer.repo.ProbesListRepo;
 import telran.avg_reducer.service.AvgReducerService;
 import telran.model.ProbesList;
-import telran.probes.dto.ProbeData;
+import telran.probes.dto.ProbeDataDto;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,9 +32,9 @@ public class AvgReducerServiceTest {
 	static final long SENSOR_ID_NO_AVG = 124l;
 	static final long SENSOR_ID_AVG = 125l;
 	static final float VALUE = 100f;
-	static final ProbeData PROBE_NO_REDIS_RECORD = new ProbeData(SENSOR_ID_NO_REDIS_RECORD, VALUE, 0);
-	static final ProbeData PROBE_NO_AVG = new ProbeData(SENSOR_ID_NO_AVG, VALUE, 0);
-	static final ProbeData PROBE_AVG = new ProbeData(SENSOR_ID_AVG, VALUE, 0);
+	static final ProbeDataDto PROBE_NO_REDIS_RECORD = new ProbeDataDto(SENSOR_ID_NO_REDIS_RECORD, VALUE, 0);
+	static final ProbeDataDto PROBE_NO_AVG = new ProbeDataDto(SENSOR_ID_NO_AVG, VALUE, 0);
+	static final ProbeDataDto PROBE_AVG = new ProbeDataDto(SENSOR_ID_AVG, VALUE, 0);
 	static final ProbesList PROBES_LIST_NO_AVG = new ProbesList(SENSOR_ID_NO_AVG);
 	static final ProbesList PROBES_LIST_AVG = new ProbesList(SENSOR_ID_AVG);
 	static final ProbesList PROBES_LIST_NO_RECORD = new ProbesList(SENSOR_ID_NO_REDIS_RECORD);
