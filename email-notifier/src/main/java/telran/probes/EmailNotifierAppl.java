@@ -4,6 +4,8 @@ package telran.probes;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +20,7 @@ import telran.probes.service.EmailDataProviderClient;
 @SpringBootApplication
 @RequiredArgsConstructor
 @Slf4j
-public class EmailNotifierAppl {
+public class EmailNotifierAppl implements ApplicationRunner {
 final EmailDataProviderClient providerClient;
 final JavaMailSender mailSender;
 	public static void main(String[] args) {
@@ -56,5 +58,12 @@ final JavaMailSender mailSender;
 		return String.format("Sensor %d has value %f \n deviation is %f",
 				deviationData.sensorId(), deviationData.value(), deviationData.deviation());
 	}
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		// sendMails(new String[]{"a.drumlevich@gmail.com"}, new ProbeDataDeviationDto(1, 1, 2, 2));
+		
+	}
 
+	
+	
 }

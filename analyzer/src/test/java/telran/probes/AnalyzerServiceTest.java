@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.InputDestination;
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
+import org.springframework.cloud.stream.binding.NewDestinationBindingCallback;
 import org.springframework.context.annotation.Import;
 
 import org.springframework.http.HttpMethod;
@@ -55,18 +56,20 @@ class AnalyzerServiceTest {
 	@Value("${app.update.token.range:range-update}")
 	String rangeUpdateToken;
 	String emailUpdateToken = "email-update";
-	@Value("${app.update.message.delimiter:#}")
+	@Value("${app.event.delimeter}")
 	String delimiter;
 
 
 
 	static final long SENSOR_ID = 123l;
-	private static final double MIN_VALUE = 10;
-	private static final double MAX_VALUE = 20;
+	private static final double MIN_VALUE = -10;
+	private static final double MAX_VALUE = 10;
 	private static final double MIN_VALUE_UPDATED = -10;
 	private static final double MAX_VALUE_UPDATED = 120;
 	static final long SENSOR_ID2 = 124l;
 	static final long SENSOR_ID_NOT_EXISTED = 126l;
+	static final long SENSOR_ID_NOT_EXISTED_2 = 127l;
+	static final long SENSOR_ID_NOT_EXISTED_3 = 128l;
 	static final SensorRangeDto SENSOR_RANGE = new SensorRangeDto(SENSOR_ID, MIN_VALUE, MAX_VALUE); 
 	static final SensorRangeDto SENSOR_RANGE_UPDATED = new SensorRangeDto(SENSOR_ID, MIN_VALUE_UPDATED, MAX_VALUE_UPDATED); 
 	static SensorRangeDto SENSOR_RANGE_DEFAULT; 
@@ -153,7 +156,8 @@ class AnalyzerServiceTest {
 
 		//checking before update
 		SensorRangeDto actual = providerService.getSensorRange(SENSOR_ID_NOT_EXISTED);
-		assertEquals(SENSOR_RANGE_DEFAULT, actual);
+		SensorRangeDto expected = new SensorRangeDto(SENSOR_ID_NOT_EXISTED, MIN_VALUE, MAX_VALUE);
+		assertEquals(expected, actual);
 
 		
 		mockRestTemplateExchangeInvocation(new ResponseEntity<SensorRangeDto>(SENSOR_RANGE_UPDATED, HttpStatus.OK));
@@ -177,7 +181,7 @@ class AnalyzerServiceTest {
 
 		mockRestTemplateExchangeInvocation(new ResponseEntity<String>("", HttpStatus.NOT_FOUND));
 
-		assertEquals(SENSOR_RANGE_DEFAULT, providerService.getSensorRange(SENSOR_ID2));
+		assertEquals(new SensorRangeDto(SENSOR_ID_NOT_EXISTED_3, MIN_VALUE, MAX_VALUE), providerService.getSensorRange(SENSOR_ID_NOT_EXISTED_3));
 		assertTrue(MyBool.value);
 	}
 
@@ -187,7 +191,7 @@ class AnalyzerServiceTest {
 		when(restTemplate.exchange(anyString(), any(HttpMethod.class), any(), any(Class.class)))
 		.thenThrow(new RestClientException("RestClientException"));
 
-		assertEquals(SENSOR_RANGE_DEFAULT, providerService.getSensorRange(SENSOR_ID2));
+		assertEquals(new SensorRangeDto(SENSOR_ID_NOT_EXISTED_2, MIN_VALUE, MAX_VALUE), providerService.getSensorRange(SENSOR_ID_NOT_EXISTED_2));
 
 	}
 

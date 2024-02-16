@@ -12,13 +12,13 @@ import lombok.Getter;
 public class SensorRangeProviderConfiguration {
 	@Value("${app.sensor.range.provider.host:localhost}")
 	String host;
-	@Value("${app.sensor.range.provider.port:8282}")
+	@Value("${app.sensor.range.provider.port}")
 	int port;
-	@Value("${app.sensor.range.provider.url:/sensor/range}")
+	@Value("${app.sensor.range.provider.url}")
 	String url;
-	@Value("${app.sensor.range.provider.default.min:0}")
+	@Value("${app.sensor.range.provider.default.min}")
 	double minDefaultValue;
-	@Value("${app.sensor.range.provider.default.max:100}")
+	@Value("${app.sensor.range.provider.default.max}")
 	double maxDefaultValue;
 	@Bean
 	RestTemplate getRestTemplate() {

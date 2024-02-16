@@ -24,8 +24,18 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 	@NonNull
 	StreamBridge streamBridge;
 	
-	@Value("${app.message_broker.output}")
+	@Value("${app.binding_name_sensor_event_out}")
 	String bindingNameString;
+	
+	@Value("${app.event.delimeter}")
+	String delimeter;
+		
+	@Value("${app.update.token.range}")
+	String updateRangeToken;
+	
+	@Value("${app.update.token.email}")
+	String updateEmailToken;
+	
 	
 	@Override
 	public SensorRangeDto updateSensorRange(SensorRangeDto sensorRange) {
@@ -50,7 +60,7 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 				)
 			)
 		);
-		streamBridge.send(bindingNameString, String.format("%s#%d", "update", sensorRange.id()));
+		streamBridge.send(bindingNameString, String.format("%s%s%d", updateRangeToken, delimeter, sensorRange.id()));
 		return sensorRange;
 	}
 
@@ -72,14 +82,14 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 				)
 			)
 		);
-		streamBridge.send(bindingNameString, String.format("%s#%d", "update", sensorEmails.id()));
+		streamBridge.send(bindingNameString, String.format("%s%s%d", updateEmailToken, delimeter, sensorEmails.id()));
 		return sensorEmails;
 	}
 
 	@Override
 	public SensorDto addSensor(SensorDto sensor) {
 		repo.save(Sensor.of(sensor));
-		streamBridge.send(bindingNameString, String.format("%s#%d", "add", sensor.id()));
+		streamBridge.send(bindingNameString, String.format("%s%s%d", "add", delimeter, sensor.id()));
 		return sensor;
 	}
 

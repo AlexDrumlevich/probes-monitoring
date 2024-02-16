@@ -11,12 +11,16 @@
   <dependencies>	 
 	  	<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+   	 		<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		<dependency>
 			 <groupId>telran.probes</groupId>
 			 <artifactId>model</artifactId>
   			 <version>${model.version}</version>
 		</dependency>
+		<dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+    </dependency>
 	</dependencies>
 </project>

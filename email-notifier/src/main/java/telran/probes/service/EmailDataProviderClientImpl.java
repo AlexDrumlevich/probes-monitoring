@@ -18,16 +18,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.SensorEmailsDto;
 import telran.probes.dto.SensorRangeDto;
-@Service
+//@Service
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
 public class EmailDataProviderClientImpl implements EmailDataProviderClient {
 	@Getter
 	HashMap<Long, String[]> mapSensorEmails = new HashMap<>();
-	@Value("${app.update.message.delimiter:#}")
+	@Value("${app.event.delimeter}")
 	String delimiter;
-	@Value("${app.update.token.range:email-update}")
+	@Value("${app.update.token.email}")
 	String emailUpdateToken;
 	final SensorEmailProviderConfiguration providerConfiguration;
 	final RestTemplate restTemplate;

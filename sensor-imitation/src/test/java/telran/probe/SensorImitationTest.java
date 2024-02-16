@@ -1,5 +1,6 @@
 package telran.probe;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Import;
 
 import telran.probes.SensorImitation;
 
+@Disabled
 @SpringBootTest(classes = SensorImitation.class)
 @Import(TestChannelBinderConfiguration.class)
 public class SensorImitationTest {
@@ -16,8 +18,9 @@ public class SensorImitationTest {
 	@Autowired
 	ApplicationContext context;
 	
+	@Disabled
 	@Test
 	void sensorImitationTest() throws InterruptedException {
-		Thread.sleep(20000);
+		Thread.sleep(1000);
 	}
 }

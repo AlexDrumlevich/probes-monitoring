@@ -20,7 +20,7 @@ public class SensorController {
 	
 	//@GetMapping("${app.sensor.range.provider.url:/sensor/range} + /{id}")
 	@GetMapping("/sensor/range/{id}")
-	SensorRangeDto getSensorRange(@PathVariable @NotEmpty long id) {
+	SensorRangeDto getSensorRange(@PathVariable long id) {
 		SensorRangeDto sensorRange =  sensorRangeProviderService.findSensorRange(id);
 		log.debug("sensor range received is {}", sensorRange);
 		return sensorRange;

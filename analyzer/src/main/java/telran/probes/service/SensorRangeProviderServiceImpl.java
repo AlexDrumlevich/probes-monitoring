@@ -24,7 +24,7 @@ import telran.probes.dto.SensorRangeDto;
 public class SensorRangeProviderServiceImpl implements SensorRangeProviderService {
 	@Getter
 	HashMap<Long, SensorRangeDto> mapRanges = new HashMap<>();
-	@Value("${app.update.message.delimiter:#}")
+	@Value("${app.event.delimeter}")
 	String delimiter;
 	@Value("${app.update.token.range:range-update}")
 	String rangeUpdateToken;

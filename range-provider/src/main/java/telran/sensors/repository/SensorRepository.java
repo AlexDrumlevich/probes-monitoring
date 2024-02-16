@@ -41,9 +41,9 @@ public class SensorRepository {
 				Aggregation.project(idFieldName, minValueFieldName, maxValueFieldName)
 		);
 		
-		
+		log.error("SensorRepository, invocation findSensorById() with id: {} for id name field: {}.", id, idFieldName);
 		List<Document> resDocuments = mongoTemplate.aggregate(aggregation, collectionName, Document.class).getMappedResults();
-		
+		log.error("SensorRepository, invocation findSensorById() with id: {}, from collection: {}, got: {} .", id, collectionName, resDocuments);
 		SensorRangeDto resSensorRangeDto = null;
 		if(resDocuments.size() == 1) {
 			Document resDocument = resDocuments.get(0);

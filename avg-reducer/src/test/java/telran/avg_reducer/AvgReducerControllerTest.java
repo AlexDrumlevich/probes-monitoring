@@ -32,7 +32,7 @@ public class AvgReducerControllerTest {
 	
 	String bindingNameInput="avg-in-0";
 	
-	@Value("${app.avg.binding.name}")
+	@Value("${app.binding_name_reduced_data_out}")
 	String bindingNameOutput;
 //	app.avg.binding.name=avg-values-out-0
 	@MockBean

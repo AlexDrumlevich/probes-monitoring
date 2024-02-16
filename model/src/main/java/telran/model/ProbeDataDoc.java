@@ -3,12 +3,18 @@ package telran.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
+
 import telran.probes.dto.ProbeDataDto;
 
 @Document(collection="probe_values")
-@AllArgsConstructor
+
 public class ProbeDataDoc {
+	public ProbeDataDoc(long sensorId, float value, long timestamp) {
+		this.sensorId = sensorId;
+		this.value = value;
+		this.timestamp = timestamp;
+	}
+
 	@Id
 	long sensorId;
 	float value;

@@ -62,16 +62,17 @@
  			 <artifactId>probes-api</artifactId>
  			 <version>${api.version}</version>
 		</dependency>
-		<dependency>
-    		  <groupId>org.springframework.boot</groupId>
-     		 <artifactId>spring-boot-starter-data-mongodb</artifactId>
-     		
-  		  </dependency>
+	
   		  <dependency>
   		  	<groupId>telran.spring</groupId>
 			<artifactId>web-exceptions-handler</artifactId>
 			<version>${exceptions_handler.version}</version>
 		 </dependency>
+		 <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
+
 
 	</dependencies>
 	<dependencyManagement>
@@ -119,5 +120,7 @@
 		<module>email-notifier</module>
 		<module>sensor-imitation</module>
 		<module>admin-console</module>
+		<module>config-server</module>
+		<module>email-provider</module>
 	</modules>
 </project>

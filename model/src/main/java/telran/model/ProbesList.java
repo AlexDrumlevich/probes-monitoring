@@ -5,13 +5,22 @@ import java.util.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import lombok.*;
 
 @RedisHash
-@Getter
-@ToString
-@NoArgsConstructor
 public class ProbesList {
+	
+	
+	public long getSensorId() {
+		return sensorId;
+	}
+	public List<Float> getValues() {
+		return values;
+	}
+	
+	@Override
+	public String toString() {
+		return "ProbesList [sensorId=" + sensorId + ", values=" + values + "]";
+	}
 	@Id
 	long sensorId;
 	List<Float> values;

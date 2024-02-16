@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.InputDestination;
@@ -47,7 +48,10 @@ class AnalyzerControllerTest {
 InputDestination producer;
 	@Autowired
 	OutputDestination consumer;
-	String bindingNameProducer="deviation-out-1";
+	@Value("${app.binding_name_sensor_deviation_out}")
+	String bindingNameProducer;
+	
+	                        
 	String bindingNameConsumer="consumerProbeData-in-0";
 	@MockBean
 	SensorRangeProviderService providerService;

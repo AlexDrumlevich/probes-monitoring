@@ -32,6 +32,9 @@ public class SensorImitation implements ApplicationRunner {
 	
 	@Value("${app.sensors}")
 	String sensorsConfig;
+	
+	@Value("app.event.delimeter")
+	String delimeter;
 
 
 
@@ -72,7 +75,7 @@ public class SensorImitation implements ApplicationRunner {
 	Consumer<String> sensorEvent() {
 		return (s) -> {
 			log.debug("Consumer sensor event got data: {}", s);
-			String[] data = s.split("#");
+			String[] data = s.split(delimeter);
 			String action = data[0];
 			Long id;
 			try {

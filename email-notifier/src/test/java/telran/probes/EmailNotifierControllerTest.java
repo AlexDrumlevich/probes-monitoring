@@ -5,19 +5,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.*;
+
 import org.springframework.context.annotation.Import;
+
 import org.springframework.messaging.support.GenericMessage;
 
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
-import com.icegreen.greenmail.util.ServerSetup;
+
 import com.icegreen.greenmail.util.ServerSetupTest;
 
 import jakarta.mail.Address;
@@ -25,14 +31,24 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import telran.probes.dto.ProbeDataDeviationDto;
 import telran.probes.service.EmailDataProviderClient;
+import telran.probes.service.SensorEmailProviderConfiguration;
+
+
+
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)
 class EmailNotifierControllerTest {
 	private static final long SENSOR_ID = 123;
 	@Autowired
-	InputDestination producer;
+InputDestination producer;
 	@MockBean
 	EmailDataProviderClient providerClient;
+	@MockBean
+	SensorEmailProviderConfiguration providerConfiguration;
+	@MockBean
+	@Qualifier("ConfigChangeConsumer")
+	Consumer<String> consumer;
+	
 	@RegisterExtension
 	static GreenMailExtension mailExtension = new GreenMailExtension(ServerSetupTest.SMTP)
 	.withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "12345.com"));

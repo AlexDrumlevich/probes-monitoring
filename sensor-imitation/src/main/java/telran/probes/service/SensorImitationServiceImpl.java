@@ -31,7 +31,7 @@ public class SensorImitationServiceImpl implements SensorImitationService {
 	@Value("${app.sensor.deviationSize}")
 	int deviationSize;
 	
-	@Value("${app.binding_name.output}")
+	@Value("${app.binding_name_probedata_sensor_out}")
 	private String bindingOutstreaName;
 
 	

@@ -20,13 +20,16 @@ import telran.probes.service.SensorRangeProviderService;
 public class AnalyzerAppl {
 final SensorRangeProviderService providerService;
 final StreamBridge streamBridge;
-@Value("${app.deviation.binding.name:deviation-out-1}")
+
+@Value("${app.binding_name_sensor_deviation_out}")
 String deviationBindingName;
+
 	public static void main(String[] args) {
 		SpringApplication.run(AnalyzerAppl.class, args);
 
 	}
-	@Bean
+	
+	@Bean(name = "consumerProbeData")
 	public Consumer<ProbeDataDto> consumerProbeData() {
 		return this::consumeMethod;
 	}
