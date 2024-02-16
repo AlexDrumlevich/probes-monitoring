@@ -6,7 +6,7 @@
     <version>0.0.1</version>
   </parent>
   <groupId>telran.range_provider</groupId>
-  <artifactId>range_provider</artifactId>
+  <artifactId>range-provider</artifactId>
   <name>range_provider</name>
   
   <dependencies>
