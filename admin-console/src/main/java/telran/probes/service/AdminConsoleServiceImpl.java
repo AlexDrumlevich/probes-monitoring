@@ -1,5 +1,7 @@
 package telran.probes.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
@@ -91,6 +93,12 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 		repo.save(Sensor.of(sensor));
 		streamBridge.send(bindingNameString, String.format("%s%s%d", "add", delimeter, sensor.id()));
 		return sensor;
+	}
+
+	@Override
+	public List<SensorDto> getAllSensors() {
+		
+		return repo.findAll().stream().map(sensor -> sensor.toDto()).toList();
 	}
 
 }
