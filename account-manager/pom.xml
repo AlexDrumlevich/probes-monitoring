@@ -5,7 +5,7 @@
     <artifactId>probes-monitoring</artifactId>
     <version>0.0.1</version>
   </parent>
-  <artifactId>accoutn-manager</artifactId>
+  <artifactId>account-manager</artifactId>
   <dependencies>
     <dependency>
 			 <groupId>telran.probes</groupId>
