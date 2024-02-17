@@ -20,9 +20,10 @@ public class SecurityConfiguration {
 		http.cors(custom -> custom.disable());
 		http.csrf(custom -> custom.disable());
 
-		http.authorizeHttpRequests(requests -> requests.anyRequest().authenticated());
-		http.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET).permitAll());
-
+		http.authorizeHttpRequests(requests -> requests
+				.requestMatchers(HttpMethod.GET).permitAll()
+				.anyRequest().authenticated());
+	
 		http.httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
