@@ -5,10 +5,9 @@
     <artifactId>probes-monitoring</artifactId>
     <version>0.0.1</version>
   </parent>
-  <artifactId>admin-console</artifactId>
-  
+  <artifactId>accoutn-manager</artifactId>
   <dependencies>
-	  <dependency>
+    <dependency>
 			 <groupId>telran.probes</groupId>
 			<artifactId>model</artifactId>
   			 <version>${model.version}</version>
@@ -17,21 +16,9 @@
     		  <groupId>org.springframework.boot</groupId>
      		 <artifactId>spring-boot-starter-data-mongodb</artifactId>
   		  </dependency>
-  		   <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-stream-binder-kafka</artifactId>
-    </dependency>
     <dependency>
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-crypto</artifactId>
 </dependency>
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-security</artifactId>
-</dependency>
-	<dependency>
-		  <groupId>org.springframework</groupId>
-		  <artifactId>spring-web</artifactId>
-	  </dependency>
-  </dependencies>
+</dependencies>
 </project>

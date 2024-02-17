@@ -123,5 +123,6 @@
 		<module>config-server</module>
 		<module>email-provider</module>
 		<module>account-provider</module>
+		<module>accoutn-manager</module>
 	</modules>
 </project>

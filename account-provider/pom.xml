@@ -17,5 +17,10 @@
 			<version>4.11.0</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>telran.probes</groupId>
+			<artifactId>model</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+  </dependencies>
 </project>

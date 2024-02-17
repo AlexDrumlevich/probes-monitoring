@@ -1,10 +1,8 @@
-package telran.probes.repo;
+package telran.security.accounting.repo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import telran.security.accounting.model.Account;
-
-
 
 public interface AccountRepo extends MongoRepository<Account, String> {
 

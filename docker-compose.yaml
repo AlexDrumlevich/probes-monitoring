@@ -128,4 +128,19 @@ services:
     environment:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
     ports:
-      - 8989:8989 
+      - 8989:8989
+  account-manager:
+    build:
+      account-manager
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 300M
+        reservations:
+          cpus: '0.3'
+          memory: 200M
+    environment:
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+    ports:
+      - 9090:9090 
