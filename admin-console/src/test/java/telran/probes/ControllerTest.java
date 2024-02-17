@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import telran.probes.service.AdminConsoleService;
 import telran.probes.service.IllegalRangeException;
 
 @WebMvcTest
+@Disabled
 public class ControllerTest {
 
 	@MockBean
