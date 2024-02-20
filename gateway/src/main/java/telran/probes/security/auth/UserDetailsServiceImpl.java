@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	final AccountProviderConfiguration accountProviderConfiguration;
 	final RestTemplate restTemplate;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		AccountDto accountDto = getAccountDto(username);
@@ -34,34 +34,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return new User(accountDto.email(), accountDto.password(),
 				AuthorityUtils.createAuthorityList(roles));
 	}
-	
-	
+
+
 	private AccountDto getAccountDto(String name) {
 		AccountDto accountDto = null;
-		
+
 		try {
-		ResponseEntity<?> responseEntity = restTemplate.getForEntity(getFullUrl(name), AccountDto.class);
-		if(!responseEntity.getStatusCode().is2xxSuccessful()) {
-			throw new Exception(responseEntity.getBody().toString());
-		}
-		accountDto = (AccountDto) responseEntity.getBody();
+			ResponseEntity<?> responseEntity = restTemplate.getForEntity(getFullUrl(name), AccountDto.class);
+			if(!responseEntity.getStatusCode().is2xxSuccessful()) {
+				throw new Exception(responseEntity.getBody().toString());
+			}
+			accountDto = (AccountDto) responseEntity.getBody();
 		} catch (Exception e) {
 			log.error("no account for name {}, reason: {}",
 					name, e.getMessage());
 		}
 		log.debug("AccountDto for name {} is {}", name, accountDto);
 		return accountDto;
-		
+
 	}
 
-private String getFullUrl(String name) {
-	String res = String.format("http://%s:%d%s/%s",
-			accountProviderConfiguration.getHost(),
-			accountProviderConfiguration.getPort(),
-			accountProviderConfiguration.getUrl(),
-			name);
-	log.debug("url:{}", res);
-	return res;
-}
+	private String getFullUrl(String name) {
+		String res = String.format("http://%s:%d%s/%s",
+				accountProviderConfiguration.getHost(),
+				accountProviderConfiguration.getPort(),
+				accountProviderConfiguration.getUrl(),
+				name);
+		log.debug("url:{}", res);
+		return res;
+	}
 
 }

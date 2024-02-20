@@ -8,13 +8,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Configuration
+@Slf4j
 public class SecurityConfiguration {
 	
 	@Value("#{${app.map.roles.uri}}")
@@ -46,6 +48,11 @@ public class SecurityConfiguration {
 		http.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		return http.build();
 		
+	}
+	
+	@PostConstruct
+	void logMap() {
+		log.debug("hosts-ports map is {}",authorizationMap);
 	}
 	
 }
