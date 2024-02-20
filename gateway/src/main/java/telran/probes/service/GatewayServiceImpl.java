@@ -34,7 +34,7 @@ Map<String, String> hostsPortsMap;
 	private String getUrl(HttpServletRequest request) {
 		String uri = request.getRequestURI(); //  /accounts/admin@tel-ran.co.il
 		log.debug("received URI: {}", uri);
-		String firstURN = uri.split("/+")[1];
+		String firstURN = "/" + uri.split("/+")[1];
 		log.debug("first URN {}", firstURN);
 		String hostPort = hostsPortsMap.get(firstURN);
 		String res = String.format("%s%s", hostPort, uri);
