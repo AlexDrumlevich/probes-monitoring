@@ -34,9 +34,9 @@ public class SecurityConfiguration {
 			authorizationMap.forEach((patternMethod, roles) -> {
 				String[] patternMethodArray = patternMethod.split(patternMethodDelimeter);
 				if(patternMethodArray[1].equals(allHTTPMethods)) {
-					requests.requestMatchers(patternMethodArray[0]).hasRole(roles);
+					requests.requestMatchers(patternMethodArray[0]).hasAnyRole(roles);
 				} else {
-					requests.requestMatchers(HttpMethod.valueOf(patternMethodArray[1]), patternMethodArray[0]).hasRole(roles);
+					requests.requestMatchers(HttpMethod.valueOf(patternMethodArray[1]), patternMethodArray[0]).hasAnyRole(roles);
 				}
 			});
 		});
@@ -46,25 +46,6 @@ public class SecurityConfiguration {
 		http.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		return http.build();
 		
-		
-	
-		.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/cars/get**").hasRole("READER")
-				.requestMatchers("/cars/create**").hasRole("ADMIN")
-				
-				 //.requestMatchers("/cars/update/**").hasRole("ADMIN")  // it is set in controller
-    			.requestMatchers("/hackerEntrance**").hasRole("ADMIN")
-    			.anyRequest().permitAll() // for swagger
-    			);
-	
 	}
-	
-	HttpSecurity setupAuthirization(var requests) {
-		authorizationMap.forEach((key, value) -> {
-			requests. .requestMatchers(HttpMethod.GET, "").hasRole("");
-		};
-		return requests;
-	}
-	
 	
 }
