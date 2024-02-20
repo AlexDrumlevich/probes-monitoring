@@ -14,7 +14,7 @@ import telran.probes.service.AccountProviderService;
 @Slf4j
 public class AccountProviderController {
 	final AccountProviderService accountingService;	
-	@GetMapping("accounts/{email}")
+	@GetMapping("${app.sensor.account.provider.url}" + "/{email}")
 	AccountDto getAccount(@PathVariable String email) {
 		return accountingService.getAccount(email);
 	}

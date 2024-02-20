@@ -18,8 +18,7 @@ public class SensorController {
 	@Autowired
 	SensorRangeProviderService sensorRangeProviderService;
 	
-	//@GetMapping("${app.sensor.range.provider.url:/sensor/range} + /{id}")
-	@GetMapping("/sensor/range/{id}")
+	@GetMapping("${app.sensor.range.provider.url}" + "/{id}")
 	SensorRangeDto getSensorRange(@PathVariable long id) {
 		SensorRangeDto sensorRange =  sensorRangeProviderService.findSensorRange(id);
 		log.debug("sensor range received is {}", sensorRange);

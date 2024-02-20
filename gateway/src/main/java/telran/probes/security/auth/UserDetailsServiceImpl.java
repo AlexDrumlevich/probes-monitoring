@@ -1,8 +1,7 @@
-package telran.probes.sequrity.auth;
+package telran.probes.security.auth;
+
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.config.AccountProviderConfiguration;
 import telran.probes.dto.AccountDto;
-
 
 @Service
 @Slf4j
@@ -67,4 +65,3 @@ private String getFullUrl(String name) {
 }
 
 }
-

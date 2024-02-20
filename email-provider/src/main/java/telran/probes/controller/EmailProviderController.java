@@ -20,8 +20,7 @@ public class EmailProviderController {
 		@Autowired
 		EmailProviderService emailProviderService;
 		
-		//@GetMapping("${app.sensor.emails.provider.url:/sensor/emails} + /{id}")
-		@GetMapping("/sensor/emails/{id}")
+		@GetMapping("${app.sensor.emails.provider.url}" + "/{id}")
 		SensorEmailsDto getSensorRange(@PathVariable long id) {
 			SensorEmailsDto sensorRange =  emailProviderService.findSensorEmail(id);
 			log.debug("sensor range received is {}", sensorRange);

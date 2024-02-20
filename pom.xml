@@ -124,5 +124,6 @@
 		<module>email-provider</module>
 		<module>account-provider</module>
 		<module>account-manager</module>
+		<module>gateway</module>
 	</modules>
 </project>

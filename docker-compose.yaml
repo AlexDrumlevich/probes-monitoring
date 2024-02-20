@@ -11,8 +11,8 @@ services:
         reservations:
           cpus: '0.3'
           memory: 200M
-    ports:
-     - 8888:8888 
+    #ports:
+    # - 8888:8888 
   analyzer:
     build:
       analyzer #path with Dockerfile for analyzer
@@ -67,8 +67,8 @@ services:
           memory: 200M
     environment:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
-    ports:
-     - 8284:8284  
+    #ports:
+    # - 8284:8284  
   email-notifier:
     build:
       email-notifier #path with Dockerfile for email-notifier
@@ -96,8 +96,8 @@ services:
           memory: 200M
     environment:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
-    ports:
-     - 8283:8283 
+    #ports:
+    #- 8283:8283 
   admin-console:
     build:
       admin-console #path with Dockerfile for admin-console
@@ -112,8 +112,8 @@ services:
     environment:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
       - CONFLUENT_API_SECRET=${CONFLUENT_API_SECRET}
-    ports:
-      - 8484:8484 
+    #ports:
+    #  - 8484:8484 
   account-provider:
     build:
       account-provider
@@ -127,8 +127,8 @@ services:
           memory: 200M
     environment:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
-    ports:
-      - 8989:8989
+    #ports:
+    #  - 8989:8989
   account-manager:
     build:
       account-manager
@@ -142,5 +142,18 @@ services:
           memory: 200M
     environment:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
+    #ports:
+    #  - 9090:9090 
+    gateway:
+    build:
+      gateway
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 300M
+        reservations:
+          cpus: '0.3'
+          memory: 200M
     ports:
-      - 9090:9090 
+      - 9191:9191
