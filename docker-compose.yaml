@@ -144,7 +144,7 @@ services:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
     #ports:
     #  - 9090:9090 
-    gateway:
+  gateway:
     build:
       gateway
     deploy:

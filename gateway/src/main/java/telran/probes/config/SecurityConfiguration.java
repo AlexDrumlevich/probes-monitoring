@@ -41,7 +41,7 @@ public class SecurityConfiguration {
 			});
 		});
 		
-		http.authorizeHttpRequests(requests -> requests.anyRequest().authenticated());
+		http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll());
 		http.httpBasic(Customizer.withDefaults());
 		http.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		return http.build();
