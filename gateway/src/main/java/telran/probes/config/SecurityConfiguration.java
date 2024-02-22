@@ -32,7 +32,7 @@ public class SecurityConfiguration {
 	SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.cors(custom -> custom.disable());
 		http.csrf(custom -> custom.disable());
-
+		http.httpBasic(Customizer.withDefaults());
 		http.authorizeHttpRequests(requests -> {
 			authorizationMap.forEach((patternMethod, roles) -> {
 				String[] patternMethodArray = patternMethod.split(patternMethodDelimeter);
@@ -42,11 +42,13 @@ public class SecurityConfiguration {
 					requests.requestMatchers(HttpMethod.valueOf(patternMethodArray[1]), patternMethodArray[0]).hasAnyRole(roles);
 				}
 			});
+			requests.anyRequest().permitAll();
 		});
 		
-		http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll());
-		http.httpBasic(Customizer.withDefaults());
-		http.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+		//http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll());
+		
+		//http.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+		http.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();
 		
 	}
