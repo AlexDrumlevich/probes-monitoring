@@ -15,17 +15,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import lombok.extern.slf4j.Slf4j;
+import telran.avg_reducer.repo.ProbesListRepo;
 import telran.avg_reducer.service.AvgReducerService;
 import telran.probes.dto.ProbeDataDto;
 
 @SpringBootApplication
+@ComponentScan("telran")
 @Slf4j
 public class AvgReducerApp implements ApplicationRunner {
 
 	@Autowired
 	private AvgReducerService avgReducerService;
+	@Autowired
+	private ProbesListRepo repo;
 	@Autowired
 	private StreamBridge streamBridge;
 
@@ -67,6 +72,7 @@ public class AvgReducerApp implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		for(int i = 0; i < 30; i++) {
+		log.debug("Calling getAvgValue from service ......");	
 		avgReducerService.getAvgValue(new ProbeDataDto(1, 99, 3));
 		}
 	}

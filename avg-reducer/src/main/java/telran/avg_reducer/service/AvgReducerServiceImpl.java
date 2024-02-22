@@ -2,9 +2,10 @@ package telran.avg_reducer.service;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +19,15 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class AvgReducerServiceImpl implements AvgReducerService {
-final ProbesListRepo probesListRepo;
-@Value("${app.average.reducing.size}")
-int reducingSize;
-	@Override
 
+	final ProbesListRepo probesListRepo;
+	
+	@Value("${app.average.reducing.size}")
+	int reducingSize;
+
+	@Override
 	public Long getAvgValue(ProbeDataDto probeData) {
+		log.debug("Calling getAvgValue (LOG INSIDE SWRVICE) !!!");	
 		long sensorId = probeData.sensorId();
 		Long res = null;
 		ProbesList probesList = probesListRepo.findById(sensorId).orElse(null);
