@@ -1,5 +1,6 @@
 package telran.probes.config;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +53,7 @@ public class SecurityConfiguration {
 	
 	@PostConstruct
 	void logMap() {
-		log.debug("hosts-ports map is {}",authorizationMap);
+		authorizationMap.forEach((key, value) -> log.debug("urn-roles map is {}: {}", key, Arrays.deepToString(value)));
 	}
 	
 }
