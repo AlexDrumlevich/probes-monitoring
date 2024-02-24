@@ -10,6 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import jakarta.annotation.PostConstruct;
@@ -29,21 +31,30 @@ public class SecurityConfiguration {
 	String allHTTPMethods;
 	
 	@Bean
+	PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
 	SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.cors(custom -> custom.disable());
 		http.csrf(custom -> custom.disable());
-		http.httpBasic(Customizer.withDefaults());
+		
 		http.authorizeHttpRequests(requests -> {
 			authorizationMap.forEach((patternMethod, roles) -> {
 				String[] patternMethodArray = patternMethod.split(patternMethodDelimeter);
 				if(patternMethodArray[1].equals(allHTTPMethods)) {
 					requests.requestMatchers(patternMethodArray[0]).hasAnyRole(roles);
+					log.debug("Gateway security set requared roles: {} for pattern: {} for any HTTP methods", roles, patternMethodArray[0]);
 				} else {
 					requests.requestMatchers(HttpMethod.valueOf(patternMethodArray[1]), patternMethodArray[0]).hasAnyRole(roles);
+					log.debug("Gateway security set requared roles: {} for pattern: {} for HTTP method: {}", roles, patternMethodArray[0], patternMethodArray[1]);
+					
 				}
 			});
 			requests.anyRequest().permitAll();
 		});
+		http.httpBasic(Customizer.withDefaults());
 		
 		//http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll());
 		
