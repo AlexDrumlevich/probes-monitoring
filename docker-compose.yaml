@@ -49,9 +49,9 @@ services:
         reservations:
           cpus: '0.3'
           memory: 200M
-    environment:
-      - CONFLUENT_API_SECRET=${CONFLUENT_API_SECRET}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    #environment:
+    #  - CONFLUENT_API_SECRET=${CONFLUENT_API_SECRET}
+    #  - REDIS_PASSWORD=${REDIS_PASSWORD}
   email-provider:
     build:
       email-provider #path with Dockerfile for email-data-provider
