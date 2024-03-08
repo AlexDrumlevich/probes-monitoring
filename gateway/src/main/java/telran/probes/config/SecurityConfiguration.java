@@ -45,10 +45,10 @@ public class SecurityConfiguration {
 				String[] patternMethodArray = patternMethod.split(patternMethodDelimeter);
 				if(patternMethodArray[1].equals(allHTTPMethods)) {
 					requests.requestMatchers(patternMethodArray[0]).hasAnyRole(roles);
-					log.debug("Gateway security set requared roles: {} for pattern: {} for any HTTP methods", roles, patternMethodArray[0]);
+					log.debug("Gateway security set required roles: {} for pattern: {} for any HTTP method", roles, patternMethodArray[0]);
 				} else {
 					requests.requestMatchers(HttpMethod.valueOf(patternMethodArray[1]), patternMethodArray[0]).hasAnyRole(roles);
-					log.debug("Gateway security set requared roles: {} for pattern: {} for HTTP method: {}", roles, patternMethodArray[0], patternMethodArray[1]);
+					log.debug("Gateway security set required roles: {} for pattern: {} for HTTP method: {}", roles, patternMethodArray[0], patternMethodArray[1]);
 					
 				}
 			});

@@ -23,10 +23,11 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 	final ProbesListRepo probesListRepo;
 	
 	@Value("${app.average.reducing.size}")
-	int reducingSize;
+	String reducingSizeString;
 
 	@Override
 	public Long getAvgValue(ProbeDataDto probeData) {
+		int avgReducerInt = Integer.valueOf(reducingSizeString);
 		log.debug("Calling getAvgValue (LOG INSIDE SWRVICE) !!!");	
 		long sensorId = probeData.sensorId();
 		Long res = null;
@@ -37,7 +38,7 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 		}
 		List<Float> values = probesList.getValues();
 		values.add(probeData.value());
-		if(values.size() >= reducingSize) {
+		if(values.size() >= avgReducerInt) {
 			log.debug("reducing for sensor {}",sensorId);
 			res = (long) values.stream().mapToLong(v -> v.longValue())
 					.average().orElse(0);
