@@ -33,4 +33,5 @@ build/
 .vscode/
 
 ###  secrets file ###
-.env
+.env/Users/alexeydrumlevich/Documents/TestGit/probes-monitoring/k8s-config
+k8s-config/secret.yaml
